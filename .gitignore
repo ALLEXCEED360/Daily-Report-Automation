@@ -1,1 +1,22 @@
-others/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtualenv
+venv/
+.env
+.env.*
+
+# Excel & images (sensitive / large)
+Others/
+*.xlsx
+*.jpg
+*.jpeg
+*.png
+
+# Editor temp
+.vscode/
+.idea/
+.DS_Store
