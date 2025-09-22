@@ -7,6 +7,10 @@ from processors.lotto_processor import LottoProcessor
 from processors.shift_processor import ShiftProcessor
 from processors.batch_processor import BatchProcessor
 from processors.day1_report_processor import Day1ReportProcessor
+from processors.day2_report_processor import Day2ReportProcessor
+from processors.day3_report_processor import Day3ReportProcessor
+from processors.handwritten_processor import HandwrittenProcessor
+
 
 def main():
     parser = argparse.ArgumentParser(description="Run processors to extract report data and update Excel.")
@@ -26,6 +30,9 @@ def main():
 
     processors = [
     Day1ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report1.jpg")}),
+    Day2ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report2.jpg")}),
+    Day3ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report3.jpg")}),
+    HandwrittenProcessor(gemini, excel, config={"image_path": os.path.join(others, "Handwritten_Report.jpg")}),
     LottoProcessor(gemini, excel, config={"image_path": os.path.join(others, "sample_report.jpg")}),
     ShiftProcessor(gemini, excel, config={"others_dir": others}),
     BatchProcessor(gemini, excel, config={"image_path": os.path.join(others, "batch_report.jpg")}),
