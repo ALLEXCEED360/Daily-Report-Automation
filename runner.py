@@ -10,6 +10,7 @@ from processors.day1_report_processor import Day1ReportProcessor
 from processors.day2_report_processor import Day2ReportProcessor
 from processors.day3_report_processor import Day3ReportProcessor
 from processors.handwritten_processor import HandwrittenProcessor
+from processors.handwritten_lotto_end_processor import HandwrittenLottoEndProcessor
 
 
 def main():
@@ -22,22 +23,23 @@ def main():
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY environment variable not set.")
 
-    gemini = GeminiVisionHandler(api_key)
+    # Use gemini-2.5-flash - it's available and faster than pro
+    gemini = GeminiVisionHandler(api_key, preferred_model="gemini-2.5-flash", max_retries=3)
     excel = ExcelHandler()
 
     base = os.path.dirname(os.path.abspath(__file__))
     others = os.path.join(base, "Others")
 
     processors = [
-    Day1ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report1.jpg")}),
-    Day2ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report2.jpg")}),
-    Day3ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report3.jpg")}),
-    HandwrittenProcessor(gemini, excel, config={"image_path": os.path.join(others, "Handwritten_Report.jpg")}),
-    LottoProcessor(gemini, excel, config={"image_path": os.path.join(others, "sample_report.jpg")}),
-    ShiftProcessor(gemini, excel, config={"others_dir": others}),
-    BatchProcessor(gemini, excel, config={"image_path": os.path.join(others, "batch_report.jpg")}),
-]
-
+        Day1ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report1.jpg")}),
+        Day2ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report2.jpg")}),
+        Day3ReportProcessor(gemini, excel, config={"image_path": os.path.join(others, "Day_Report3.jpg")}),
+        HandwrittenProcessor(gemini, excel, config={"image_path": os.path.join(others, "Handwritten_Report.jpg")}),
+        LottoProcessor(gemini, excel, config={"image_path": os.path.join(others, "sample_report.jpg")}),
+        ShiftProcessor(gemini, excel, config={"others_dir": others}),
+        BatchProcessor(gemini, excel, config={"image_path": os.path.join(others, "batch_report.jpg")}),
+        HandwrittenLottoEndProcessor(gemini, excel, config={"image_path": os.path.join(others, "Handwritten_Report.jpg"),"others_dir": others})
+    ]
 
     for p in processors:
         print("\n" + "="*50)
